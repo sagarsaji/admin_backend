@@ -8,4 +8,5 @@ import com.ust.admin.model.Restaurant;
 @Repository
 public interface RestRepo extends JpaRepository<Restaurant,Long>{
 
+
 }

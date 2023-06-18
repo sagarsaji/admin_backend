@@ -59,12 +59,17 @@ public class Rcontroller {
 	public void delete(@PathVariable Long id) {
 		repo.deleteById(id);
 	}
-	
-	@GetMapping("/restname")
-	public List<String> getRestaurantName(){
-		List<Restaurant> restaurants = repo.findAll();
-		return restaurants.stream().map(Restaurant::getRestName).collect(Collectors.toList());
+
+	@DeleteMapping("/delete/menu/{mid}")
+	public void deletemenu(@PathVariable Long mid){
+		mrepo.deleteById(mid);
 	}
+	
+//	@GetMapping("/restname")
+//	public List<String> getRestaurantName(){
+//		List<Restaurant> restaurants = repo.findAll();
+//		return restaurants.stream().map(Restaurant::getRestName).collect(Collectors.toList());
+//	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Restaurant rest ){
@@ -85,7 +90,37 @@ public class Rcontroller {
 				return null;
 			}
 	}
-	
+
+	@PutMapping("/menu/update/{mid}")
+	public ResponseEntity<?> updatemenu(@PathVariable Long mid,@RequestBody Menu menu ){
+
+		Menu temp=null;
+		Optional<Menu> op1=mrepo.findById(mid);
+		if(op1.isPresent()) {
+			temp=op1.get();
+			temp.setMname(menu.getMname());
+			temp.setMpic(menu.getMpic());
+			temp.setMprice(menu.getMprice());
+			temp.setRestname(menu.getRestname());
+			Menu menu3=mrepo.save(temp);
+			return ResponseEntity.ok().body(menu3);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	@GetMapping("/menu/find/{restname}")
+	public List<Menu> getByRestName(@PathVariable String restname){
+		return mrepo.findByRestname(restname);
+	}
+
+	@GetMapping("/getAllMenu")
+	public List<Menu> getAllMenu(){
+		return mrepo.findAll();
+	}
+
 	
 	@GetMapping("/getbyid/{id}")
 	public Restaurant getbyid(@PathVariable Long id ){
@@ -98,5 +133,15 @@ public class Rcontroller {
 		}
 		else 
 	     	return	null;	
+	}
+
+	@GetMapping("/getbyid/menu/{mid}")
+	public Menu getbymid(@PathVariable Long mid ){
+		Optional<Menu> op=mrepo.findById(mid);
+		if(op.isPresent()) {
+			return op.get();
+		}
+		else
+			return	null;
 	}
 }

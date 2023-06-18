@@ -1,5 +1,7 @@
 package com.ust.admin.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,17 +15,7 @@ public class Menu {
     private String mprice;
     private String mpic;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rest_id")
-    private Restaurant restaurant;
-
-    public Menu(Long mid, String mname, String mprice, String mpic, Restaurant restaurant) {
-        this.mid = mid;
-        this.mname = mname;
-        this.mprice = mprice;
-        this.mpic = mpic;
-        this.restaurant = restaurant;
-    }
+    private String restname;
 
     public Long getMid() {
         return mid;
@@ -57,12 +49,20 @@ public class Menu {
         this.mpic = mpic;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public String getRestname() {
+        return restname;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setRestname(String restname) {
+        this.restname = restname;
+    }
+
+    public Menu(Long mid, String mname, String mprice, String mpic, String restname) {
+        this.mid = mid;
+        this.mname = mname;
+        this.mprice = mprice;
+        this.mpic = mpic;
+        this.restname = restname;
     }
 
     public Menu() {
